@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flipcards (CSS Only)</title>
+<style>
+  :root {
+    --light: #B9E0F7;   /* Light Blue */
+    --dark: #0094D3;    /* Dark Blue */
+    --radius: 12px;
+  }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--light);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* always 5 columns */
+    gap: 16px;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .card {
+    perspective: 1000px;
+    height: 240px;
+  }
+  .inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  /* flip on hover or focus */
+  .card:hover .inner,
+  .card:focus-within .inner {
+    transform: rotateY(180deg);
+  }
+  .front, .back {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    backface-visibility: hidden;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .front {
+    background: var(--light);
+  }
+  .front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .back {
+    background: var(--dark);
+    color: #fff;
+    transform: rotateY(180deg);
+    padding: 15px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card" tabindex="0">
+      <div class="inner">
+        <div class="front">
+          <img src="https://via.placeholder.com/300x200.png?text=Image+1" alt="Image 1">
+        </div>
+        <div class="back">
+          <p>Card 1 details</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" tabindex="0">
+      <div class="inner">
+        <div class="front">
+          <img src="https://via.placeholder.com/300x200.png?text=Image+2" alt="Image 2">
+        </div>
+        <div class="back">
+          <p>Card 2 details</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" tabindex="0">
+      <div class="inner">
+        <div class="front">
+          <img src="https://via.placeholder.com/300x200.png?text=Image+3" alt="Image 3">
+        </div>
+        <div class="back">
+          <p>Card 3 details</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" tabindex="0">
+      <div class="inner">
+        <div class="front">
+          <img src="https://via.placeholder.com/300x200.png?text=Image+4" alt="Image 4">
+        </div>
+        <div class="back">
+          <p>Card 4 details</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" tabindex="0">
+      <div class="inner">
+        <div class="front">
+          <img src="https://via.placeholder.com/300x200.png?text=Image+5" alt="Image 5">
+        </div>
+        <div class="back">
+          <p>Card 5 details</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
