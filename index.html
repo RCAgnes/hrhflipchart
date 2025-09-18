@@ -3,121 +3,200 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flipcards (CSS Only)</title>
+<title>Flipcards (CSS Only, SPO-safe)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --light: #B9E0F7;   /* Light Blue */
-    --dark: #0094D3;    /* Dark Blue */
-    --radius: 12px;
+  :root { --radius: 12px; --dark: #0094D3; --btn-bg:#fff; --btn-fg:#006aa0; }
+  body { margin:0; font-family:'Montserrat', Arial, sans-serif; background:transparent; }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    padding:20px;
+    max-width:1400px;
+    margin:0 auto;
+    background:transparent;
   }
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--light);
+
+  .card{ perspective:1000px; height:340px; width:100%; margin:0 auto; background:transparent; }
+  .inner{ position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d; will-change:transform; }
+
+  /* flip */
+  .card:hover .inner, .card:focus-within .inner{ transform:rotateY(180deg); }
+
+  .face{ position:absolute; inset:0; border-radius:var(--radius); -webkit-backface-visibility:hidden; backface-visibility:hidden; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+  .front{ background:transparent; pointer-events:auto; z-index:1; }
+  .front img{ width:100%; height:100%; object-fit:contain; display:block; background:transparent; }
+
+  .back{
+    transform:rotateY(180deg) translateZ(1px);  /* ensure it sits “on top” when flipped */
+    background:rgba(0,148,211,.6);
+    color:#fff; padding:16px; text-align:center;
+    word-break:break-word; hyphens:auto;
+    pointer-events:none;  /* default: not clickable until flipped */
+    z-index:2;
+    display:flex; flex-direction:column; gap:12px; justify-content:center;
   }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* always 5 columns */
-    gap: 16px;
-    padding: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
+
+  /* when flipped: front stops catching clicks; back becomes clickable */
+  .card:hover .front, .card:focus-within .front{ pointer-events:none; }
+  .card:hover .back,  .card:focus-within .back { pointer-events:auto; }
+
+  .back p{ margin:0; font-size:1.05rem; line-height:1.4; }
+
+  /* Only style the back button; don't let any global rule make links full-size */
+  .back a{ display:inline-block; width:auto; height:auto; text-decoration:none; }
+
+  /* visible button */
+  .btn{
+    padding:8px 14px; border-radius:10px;
+    background:var(--btn-bg); color:var(--btn-fg); font-weight:700; font-size:.95rem;
+    box-shadow:0 1px 2px rgba(0,0,0,.08);
   }
-  .card {
-    perspective: 1000px;
-    height: 240px;
-  }
-  .inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-  }
-  /* flip on hover or focus */
-  .card:hover .inner,
-  .card:focus-within .inner {
-    transform: rotateY(180deg);
-  }
-  .front, .back {
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius);
-    backface-visibility: hidden;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .front {
-    background: var(--light);
-  }
-  .front img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .back {
-    background: var(--dark);
-    color: #fff;
-    transform: rotateY(180deg);
-    padding: 15px;
-    text-align: center;
-  }
+  .btn:hover{ background:#eee; }
 </style>
 </head>
 <body>
   <div class="grid">
+
+    <!-- CARD 1 -->
     <div class="card" tabindex="0">
       <div class="inner">
-        <div class="front">
-          <img src="https://via.placeholder.com/300x200.png?text=Image+1" alt="Image 1">
+        <div class="face front">
+          <img src="https://hrhtoronto.sharepoint.com/pfcc/SiteAssets/SiteAssets/pdcclogocardportrait2.png" alt="Post-Discharge Call Centre">
         </div>
-        <div class="back">
-          <p>Card 1 details</p>
+        <div class="face back">
+          <p>Follows up with patients after discharge, using surveys and calls to improve care and reduce readmissions.</p>
+          <a class="btn nav-out"
+             href="https://hrhtoronto.sharepoint.com/pfcc/SitePages/postdischargecenteredcare.aspx"
+             target="_top"
+             rel="noopener"
+             data-interception="off">Open page</a>
         </div>
       </div>
     </div>
+
+    <!-- CARD 2 -->
     <div class="card" tabindex="0">
       <div class="inner">
-        <div class="front">
-          <img src="https://via.placeholder.com/300x200.png?text=Image+2" alt="Image 2">
+        <div class="face front">
+          <img src="https://hrhtoronto.sharepoint.com/pfcc/SiteAssets/SiteAssets/pfacardportrait2.png" alt="Patient & Family Advisory">
         </div>
-        <div class="back">
-          <p>Card 2 details</p>
+        <div class="face back">
+          <p>Engages patients and families as advisors to help staff design more patient-centered care.</p>
+          <a class="btn nav-out"
+             href="https://hrhtoronto.sharepoint.com/pfcc/SitePages/Patient-and-Family-Advisory.aspx"
+             target="_top"
+             rel="noopener"
+             data-interception="off">Open page</a>
         </div>
       </div>
     </div>
+
+    <!-- CARD 3 -->
     <div class="card" tabindex="0">
       <div class="inner">
-        <div class="front">
-          <img src="https://via.placeholder.com/300x200.png?text=Image+3" alt="Image 3">
+        <div class="face front">
+          <img src="https://hrhtoronto.sharepoint.com/pfcc/SiteAssets/SiteAssets/prcardportrait2.png" alt="Patient Relations">
         </div>
-        <div class="back">
-          <p>Card 3 details</p>
+        <div class="face back">
+          <p>Supports staff in resolving patient concerns, complaints, and compliments with fairness and respect.</p>
+          <a class="btn nav-out"
+             href="https://hrhtoronto.sharepoint.com/pfcc/SitePages/Patient-Relations.aspx"
+             target="_top"
+             rel="noopener"
+             data-interception="off">Open page</a>
         </div>
       </div>
     </div>
-    <div class="card" tabindex="0">
-      <div class="inner">
-        <div class="front">
-          <img src="https://via.placeholder.com/300x200.png?text=Image+4" alt="Image 4">
-        </div>
-        <div class="back">
-          <p>Card 4 details</p>
-        </div>
-      </div>
-    </div>
-    <div class="card" tabindex="0">
-      <div class="inner">
-        <div class="front">
-          <img src="https://via.placeholder.com/300x200.png?text=Image+5" alt="Image 5">
-        </div>
-        <div class="back">
-          <p>Card 5 details</p>
-        </div>
-      </div>
-    </div>
+
+    <!-- Duplicate more cards here... -->
   </div>
-</body>
-</html>
+
+  <!-- JS FALLBACK: try _top, then _blank, then form to _top, then self -->
+  <script>
+  (function () {
+    function tryParent(url){
+      try{
+        if (window.parent && window.parent !== window.self) {
+          window.parent.location.href = url;
+          return true;
+        }
+      }catch(e){}
+      return false;
+    }
+    function tryTop(url){
+      try{
+        if (window.top && window.top !== window.self) {
+          window.top.location.href = url;
+          return true;
+        }
+      }catch(e){}
+      return false;
+    }
+    function tryProgrammaticAnchor(url, target){
+      try{
+        var a = document.createElement('a');
+        a.href = url;
+        a.target = target || '_blank';
+        a.rel = 'noopener';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();                  // user-gesture context
+        setTimeout(function(){ if(a.parentNode) a.parentNode.removeChild(a); }, 1500);
+        return true;
+      }catch(e){ return false; }
+    }
+    function tryWindowOpen(url){
+      try{
+        var w = window.open(url, '_blank', 'noopener');
+        return !!w;
+      }catch(e){ return false; }
+    }
+    function tryFormTop(url){
+      try{
+        var f = document.createElement('form');
+        f.method = 'GET';
+        f.action = url;
+        f.target = '_top';
+        f.style.display = 'none';
+        document.body.appendChild(f);
+        f.submit();
+        setTimeout(function(){ if(f.parentNode) f.parentNode.removeChild(f); }, 1500);
+        return true;
+      }catch(e){ return false; }
+    }
+    function trySelf(url){
+      try{ window.location.href = url; return true; }catch(e){ return false; }
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('.btn').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          // Permite ctrl/cmd/shift/middle-click do usuário
+          if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
+
+          e.preventDefault();
+          var url = btn.getAttribute('href') || btn.href;
+
+          // 1) parent/top (mesmo tenant)
+          if (tryParent(url)) return;
+          if (tryTop(url)) return;
+
+          // 2) âncora programática (mais confiável que window.open em sandbox)
+          if (tryProgrammaticAnchor(url, '_blank')) return;
+
+          // 3) window.open direto (se o sandbox permitir popups)
+          if (tryWindowOpen(url)) return;
+
+          // 4) form para _top (alguns sandboxes permitem)
+          if (tryFormTop(url)) return;
+
+          // 5) navegar dentro do iframe (último recurso)
+          trySelf(url);
+        }, {passive:false});
+      });
+    });
+  })();
+</script>
