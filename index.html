@@ -6,7 +6,7 @@
 <title>Flipcards (CSS Only, SPO-safe)</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root { --radius: 12px; --dark: #0094D3; --btn-bg:#fff; --btn-fg:#006aa0; }
+  :root { --radius: 12px; --dark: #006aa0; --dark-rgb: 0,106,160; --btn-bg:#fff; --btn-fg:#006aa0; }
   body { margin:0; font-family:'Montserrat', Arial, sans-serif; background:transparent; }
 
   .grid{
@@ -19,19 +19,44 @@
     background:transparent;
   }
 
-  .card{ perspective:1000px; height:340px; width:100%; margin:0 auto; background:transparent; }
+  .card{ position:relative; perspective:1000px; height:340px; width:100%; margin:0 auto; background:transparent; }
+  /* light-blue contour (keeps existing border/look) */
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:var(--radius);
+    pointer-events:none;
+    box-shadow: 0 0 0 3px rgba(0,122,204,0.12); /* contorno azul-claro */
+  }
+
   .inner{ position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d; will-change:transform; }
 
   /* flip */
   .card:hover .inner, .card:focus-within .inner{ transform:rotateY(180deg); }
 
   .face{ position:absolute; inset:0; border-radius:var(--radius); -webkit-backface-visibility:hidden; backface-visibility:hidden; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-  .front{ background:transparent; pointer-events:auto; z-index:1; }
+  .front{ background:transparent; pointer-events:auto; z-index:1; position:relative; overflow:hidden; }
   .front img{ width:100%; height:100%; object-fit:contain; display:block; background:transparent; }
+
+  /* blue stripe only on the front (hidden when flipped) */
+  .front::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:30%;
+    background:linear-gradient( to top, rgba(var(--dark-rgb),0.95) 0%, rgba(var(--dark-rgb),0.75) 60%, rgba(0,0,0,0) 100% );
+    pointer-events:none;
+    z-index:2;
+    transition:opacity .25s ease;
+  }
+  /* hide the stripe when card is flipped / focused */
+  .card:hover .front::after, .card:focus-within .front::after{ opacity:0; }
 
   .back{
     transform:rotateY(180deg) translateZ(1px);  /* ensure it sits “on top” when flipped */
-    background:rgba(0,148,211,.6);
+    /* uniform dark-blue translucent back (sem tarja) */
+    background: rgba(var(--dark-rgb),0.85);
     color:#fff; padding:16px; text-align:center;
     word-break:break-word; hyphens:auto;
     pointer-events:none;  /* default: not clickable until flipped */
@@ -200,3 +225,5 @@
     });
   })();
 </script>
+</body>
+</html>
